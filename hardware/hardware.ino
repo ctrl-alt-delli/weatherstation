@@ -67,6 +67,7 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_MOSI, TFT_CLK, TFT_R
 // IMPORT FONTS FOR TFT DISPLAY
 #include <Fonts/FreeMono9pt7b.h>
 #include <Fonts/FreeSansBold9pt7b.h> 
+#include <Fonts/FreeSerifBoldItalic9pt7b.h> 
 
 
 // MQTT CLIENT CONFIG  
@@ -162,34 +163,46 @@ void setup() {
   pinMode(BTN_3,INPUT_PULLUP);
 
   tft.begin();
-  tft.setFont(&FreeMono9pt7b);
+  tft.setFont(&FreeSerifBoldItalic9pt7b);
   tft.print("\u00B0");
+
 
   // Display the welcome message
   tft.fillScreen(ILI9341_WHITE);
   tft.setTextColor(ILI9341_BLACK);
-    tft.setCursor(5, 40);
-    tft.print("Welcome to the ELET");
-    tft.setCursor(5, 60);
-    tft.print("2415 Weather Station!");
-
-    // Display the options
-    tft.setCursor(5, 90);
-    tft.print("Here are the options:");
+  tft.drawRoundRect(2, 2, tft.width() - 4, tft.height() - 4, 8, ILI9341_BLACK);
+  tft.drawRoundRect(6, 6, tft.width() - 12, tft.height() - 12, 6, ILI9341_BLACK);
+  tft.setTextSize(2.5);
+  tft.setCursor(50, 40);
+    tft.print("Booting");
+  tft.setCursor(50, 90);
+    tft.print("Weather");
+    tft.setCursor(50, 140);
+    tft.print("Station...");
+    for (int i = 0; i <= 100; i += 10) {
+        drawProgressBar(20, 210, tft.width() - 40, 15, i);
+        delay(500); 
+    }
+    tft.fillScreen(ILI9341_WHITE);
+    tft.setCursor(10, 40);
+    tft.print("Welcome");
+    tft.setCursor(5, 80);
+    tft.setTextSize(1.5);
+    tft.print("Choose one of the following");
+    tft.setCursor(5, 100);
+    tft.print("options:");
 
     tft.setCursor(5, 130);
-    tft.print("- Press button 1 for");
+    tft.print("- Press button 1 for tempera-");
     tft.setCursor(5, 150);
-    tft.print("temperature and humi-");
-    tft.setCursor(5, 170);
-    tft.print("dity.");
+    tft.print("ture and humidity");
+    //tft.setCursor(5, 170);
+    //tft.print("dity.");
 
     tft.setCursor(5, 200);
-    tft.print("- Press button 2 for");
+    tft.print("- Press button 2 for altitude");
     tft.setCursor(5, 220);
-    tft.print("altitude and air pre-");
-    tft.setCursor(5, 240);
-    tft.print("ssure.");
+    tft.print("and air pressure");
 
     tft.setCursor(5, 270);
     tft.print("- Press button 3 for");
@@ -269,10 +282,10 @@ void vUpdate( void * pvParameters )  {
 
           Serial.print(F("Humidity: "));
           Serial.print(h);
-          Serial.print(F("% Temperature: "));
+          Serial.print(F("%\r\n Temperature: "));
           Serial.print(t);
-          Serial.print(F("°C "));
-          Serial.print(F("Heat Index: "));
+          Serial.print(F("°C\r\n"));
+          Serial.print(F(" Heat Index: "));
           Serial.print(convert_fahrenheit_to_Celsius(calcHeatIndex(convert_Celsius_to_fahrenheit(t),h)));
           Serial.print(F("°C\r\n "));
           Serial.print(F("Soil Moisture: "));
@@ -283,7 +296,7 @@ void vUpdate( void * pvParameters )  {
           Serial.print(F("m\r\n "));
           Serial.print(F("Air pressure: "));
           Serial.print(p);
-          Serial.print(F("Pa\r\n "));
+          Serial.print(F("mb\r\n "));
 
 
 
@@ -419,6 +432,7 @@ bool isNumber(double number){
 
 
 void displayDataTemp(float temp, float hum, float heatIndex) {
+
     tft.drawRGBBitmap(0,0, sunny, 240, 320); // DRAW IMAGE ON SCREEN
     tft.setTextColor(ILI9341_WHITE);
     tft.setFont(&FreeSansBold9pt7b);
@@ -484,16 +498,22 @@ void displayDataAlt(float alt, float press) {
     tft.setCursor(10, 130);
     tft.print("Altitude: ");
     tft.print(alt, 1);
-    tft.print("m");
+    tft.print(" m");
 
     tft.setCursor(10, 165);
     tft.print("Air Pressure: ");
     tft.setCursor(10, 185);
     tft.print(press, 1);
-    tft.print("Pa");
+    tft.print(" mb");
 
 }
 
 float mapVWC(int sensorValue, int adcDry, int adcWet) {
   return ((float)(sensorValue - adcWet) / (adcDry - adcWet)) * 100.0;
+}
+
+void drawProgressBar(int x, int y, int w, int h, int progress) {
+    int filled = (progress * w) / 100; 
+    tft.drawRect(x, y, w, h, ILI9341_MAGENTA);
+    tft.fillRect(x + 1, y + 1, filled - 2, h - 2, ILI9341_MAGENTA);
 }
