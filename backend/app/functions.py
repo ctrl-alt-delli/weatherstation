@@ -48,14 +48,14 @@ class DB:
 
 
     ####################
-    # LAB 1 FUNCTIONS  #
+    # WEATHER STATION DATABASE UTIL FUNCTIONS  #
     ####################
     
     def addUpdate(self,data):
         '''ADD A NEW STORAGE LOCATION TO COLLECTION'''
         try:
             remotedb 	= self.remoteMongo('mongodb://%s:%s@%s:%s' % (self.username, self.password,self.server,self.port), tls=self.tls)
-            result      = remotedb.ELET2415.update.insert_one(data)
+            result      = remotedb.ELET2415.weather.insert_one(data)
         except Exception as e:
             msg = str(e)
             if "duplicate" not in msg:
@@ -64,30 +64,104 @@ class DB:
         else:                  
             return True
         
+       
 
-    def numberFrequency(self):
-        '''RETURNS A LIST OF OBJECTS. EACH OBJECT CONTAINS A NUMBER AND ITS FREQUECY'''
+    def getAllInRange(self,start, end):
+        '''RETURNS A LIST OF OBJECTS. THAT FALLS WITHIN THE START AND END DATE RANGE'''
         try:
             remotedb 	= self.remoteMongo('mongodb://%s:%s@%s:%s' % (self.username, self.password,self.server,self.port), tls=self.tls)
-            result      = list(remotedb.ELET2415.update.aggregate([ { '$group': { '_id': '$number', 'frequency': { '$sum': 1 } } }, { '$sort': { '_id': 1 } }, { '$project': { '_id': 0, 'number': '$_id', 'frequency': 1 } } ]))
+            result      = list(remotedb.ELET2415.weather.find({"timestamp":{"$gte":int(start),"$lte":int(end)}}, {"_id":0}).sort("timestamp",1))
         except Exception as e:
             msg = str(e)
-            print("numberFrequency error ",msg)
-            
+            print("getAllInRange error ",msg)            
         else:                  
             return result
+        
 
-
-    def onCount(self,LED_Name):
-        '''RETURN A COUNT OF HOW MANY TIME A SPECIFIC LED WAS TURNED ON'''
+    def humidityMMAR(self,start, end):
+        '''RETURNS MIN, MAX, AVG AND RANGE FOR HUMIDITY. THAT FALLS WITHIN THE START AND END DATE RANGE'''
         try:
             remotedb 	= self.remoteMongo('mongodb://%s:%s@%s:%s' % (self.username, self.password,self.server,self.port), tls=self.tls)
-            result      = remotedb.ELET2415.update.count_documents({LED_Name:{"$eq":1}})
+            result      = list(remotedb.ELET2415.weather.aggregate([{"$match": {"timestamp": {"$gte": int(start), "$lte": int(end)}}}, {"$group": {"_id": None, "humidity": {"$push": "$$ROOT.humidity"}}}, {"$project": {"_id": 0, "max": {"$max": "$humidity"}, "min": {"$min": "$humidity"},"avg": {"$avg": "$humidity"}, "range": {"$subtract": [{"$max": "$humidity"}, {"$min": "$humidity"}]}}}]))
         except Exception as e:
-            msg = str(e) 
-            print("onCount error ",msg)             
+            msg = str(e)
+            print("humidityMMAS error ",msg)            
         else:                  
             return result
+        
+    def temperatureMMAR(self,start, end):
+        '''RETURNS MIN, MAX, AVG AND RANGE FOR TEMPERATURE. THAT FALLS WITHIN THE START AND END DATE RANGE'''
+        try:
+            remotedb 	= self.remoteMongo('mongodb://%s:%s@%s:%s' % (self.username, self.password,self.server,self.port), tls=self.tls)
+            result      = list(remotedb.ELET2415.weather.aggregate([{"$match": {"timestamp": {"$gte": int(start), "$lte": int(end)}}},{"$group": {"_id": None,"temperature": {"$push": "$$ROOT.temperature"}}},{"$project": {"_id": 0,"max": {"$max": "$temperature"},"min": {"$min": "$temperature"},"avg": {"$avg": "$temperature"},"range": {"$subtract": [{"$max": "$temperature"}, {"$min": "$temperature"}]}}}]))
+        except Exception as e:
+            msg = str(e)
+            print("temperatureMMAS error ",msg)            
+        else:
+            print(f"Fetched data: {result}")        
+            return result
+    
+    def heatMMAR(self,start, end):
+        '''RETURNS MIN, MAX, AVG AND RANGE FOR HEAT. THAT FALLS WITHIN THE START AND END DATE RANGE'''
+        try:
+            remotedb 	= self.remoteMongo('mongodb://%s:%s@%s:%s' % (self.username, self.password,self.server,self.port), tls=self.tls)
+            result      = list(remotedb.ELET2415.weather.aggregate([{"$match": {"timestamp": {"$gte": int(start), "$lte": int(end)}}},{"$group": {"_id": None,"heat_index": {"$push": "$$ROOT.heat_index"}}},{"$project": {"_id": 0,"max": {"$max": "$heat_index"},"min": {"$min": "$heat_index"},"avg": {"$avg": "$heat_index"},"range": {"$subtract": [{"$max": "$heat_index"}, {"$min": "$heat_index"}]}}}]))
+        except Exception as e:
+            msg = str(e)
+            print("heatMMAS error ",msg)            
+        else:
+            print(f"Fetched data: {result}")        
+            return result
+    
+    def soilMMAR(self,start, end):
+        '''RETURNS MIN, MAX, AVG AND RANGE FOR SOIL MOISTURE. THAT FALLS WITHIN THE START AND END DATE RANGE'''
+        try:
+            remotedb 	= self.remoteMongo('mongodb://%s:%s@%s:%s' % (self.username, self.password,self.server,self.port), tls=self.tls)
+            result      = list(remotedb.ELET2415.weather.aggregate([{"$match": {"timestamp": {"$gte": int(start), "$lte": int(end)}}},{"$group": {"_id": None,"soil_moisture": {"$push": "$$ROOT.soil_moisture"}}},{"$project": {"_id": 0,"max": {"$max": "$soil_moisture"},"min": {"$min": "$soil_moisture"},"avg": {"$avg": "$soil_moisture"},"range": {"$subtract": [{"$max": "$soil_moisture"}, {"$min": "$soil_moisture"}]}}}]))
+        except Exception as e:
+            msg = str(e)
+            print("soilMMAS error ",msg)            
+        else:
+            print(f"Fetched data: {result}")        
+            return result
+    
+    def altitudeMMAR(self,start, end):
+        '''RETURNS MIN, MAX, AVG AND RANGE FOR ALTITUDE. THAT FALLS WITHIN THE START AND END DATE RANGE'''
+        try:
+            remotedb 	= self.remoteMongo('mongodb://%s:%s@%s:%s' % (self.username, self.password,self.server,self.port), tls=self.tls)
+            result      = list(remotedb.ELET2415.weather.aggregate([{"$match": {"timestamp": {"$gte": int(start), "$lte": int(end)}}},{"$group": {"_id": None,"altitude": {"$push": "$$ROOT.altitude"}}},{"$project": {"_id": 0,"max": {"$max": "$altitude"},"min": {"$min": "$altitude"},"avg": {"$avg": "$altitude"},"range": {"$subtract": [{"$max": "$altitude"}, {"$min": "$altitude"}]}}}]))
+        except Exception as e:
+            msg = str(e)
+            print("altitudeMMAS error ",msg)            
+        else:
+            print(f"Fetched data: {result}")        
+            return result
+
+    def pressureMMAR(self,start, end):
+        '''RETURNS MIN, MAX, AVG AND RANGE FOR AIR PRESSURE. THAT FALLS WITHIN THE START AND END DATE RANGE'''
+        try:
+            remotedb 	= self.remoteMongo('mongodb://%s:%s@%s:%s' % (self.username, self.password,self.server,self.port), tls=self.tls)
+            result      = list(remotedb.ELET2415.weather.aggregate([{"$match": {"timestamp": {"$gte": int(start), "$lte": int(end)}}},{"$group": {"_id": None,"pressure": {"$push": "$$ROOT.pressure"}}},{"$project": {"_id": 0,"max": {"$max": "$pressure"},"min": {"$min": "$pressure"},"avg": {"$avg": "$pressure"},"range": {"$subtract": [{"$max": "$pressure"}, {"$min": "$pressure"}]}}}]))
+        except Exception as e:
+            msg = str(e)
+            print("pressureMMAS error ",msg)            
+        else:
+            print(f"Fetched data: {result}")        
+            return result
+
+
+    def frequencyDistro(self,variable,start, end):
+        '''RETURNS THE FREQUENCY DISTROBUTION FOR A SPECIFIED VARIABLE WITHIN THE START AND END DATE RANGE'''
+        try:
+            remotedb 	= self.remoteMongo('mongodb://%s:%s@%s:%s' % (self.username, self.password,self.server,self.port), tls=self.tls)
+            result      = list(remotedb.ELET2415.weather.aggregate([{"$match": {"timestamp": {"$gte": int(start), "$lte": int(end)}}}, {"$bucket": {"groupBy": "$" + variable, "boundaries": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100], "default": "outliers", "output": {"count": {"$sum": 1}}}}]))
+        except Exception as e:
+            msg = str(e)
+            print("frequencyDistro error ",msg)            
+        else:                  
+            return result
+        
+ 
 
 
 

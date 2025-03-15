@@ -1,4 +1,4 @@
-Weather Station Starter API
+# ELET2415 Starter API
 
 This template is a Python API Module.
 

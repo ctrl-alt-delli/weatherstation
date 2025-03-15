@@ -15,7 +15,7 @@ class MQTT:
     # ID = f"IOT_B_1000"
     ID = f"IOT_B_{randint(1,1000000)}"
 
-    #  DEFINE ALL TOPICS TO SUBSCRIBE TO
+    #  1. DEFINE ALL TOPICS TO SUBSCRIBE TO. BELOW ARE SOME EXAMPLES. YOUR ARE REQUIRED TO CHANGE THESE TO TOPICS THAT FITS YOUR USE CASE
     sub_topics = [("620157584_pub", 0), ("620157584", 0), ("620157584_sub", 0)] #  A list of tuples of (topic, qos). Both topic and qos must be present in the tuple.
 
 
@@ -33,11 +33,12 @@ class MQTT:
         self.client.on_subscribe    = self.on_subscribe
 
 
-        # REGISTER CALLBACK FUNCTION FOR EACH TOPIC
-        self.client.message_callback_add("620157584", self.gdp)
-        self.client.message_callback_add("620157584_pub", self.toggle)
+        # 3. REGISTER CALLBACK FUNCTION(S) FOR EACH TOPIC USING THE self.client.message_callback_add("topic",self.function) FUNCTION
+        # WHICH TAKES A TOPIC AND THE NAME OF THE CALLBACK FUNCTION YOU HAVE CREATED FOR THIS SPECIFIC TOPIC
 
-        # ADD MQTT SERVER AND PORT INFORMATION BELOW
+        self.client.message_callback_add("620157584", self.update)
+
+        # 4. UPDATE MQTT SERVER AND PORT INFORMATION BELOW
         self.client.connect_async("broker.emqx.io", 1883, 60)
        
 
@@ -80,8 +81,9 @@ class MQTT:
             print("MQTT: Unexpected Disconnection.")
    
 
-    # DEFINE CALLBACK FUNCTIONS FOR EACH TOPIC
-    def gdp(self, client, userdata, msg):
+    # 2. DEFINE CALLBACK FUNCTIONS(S) BELOW FOR EACH TOPIC(S) THE BACKEND SUBSCRIBES TO 
+     
+    def update(self, client, userdata, msg):
         try:
             topic   = msg.topic
             payload = msg.payload.decode("utf-8")
@@ -93,22 +95,6 @@ class MQTT:
         except Exception as e:
             print(f"MQTT: GDP Error: {str(e)}")
 
-    def toggle(self,client, userdata, msg):    
-        '''Process messages from Frontend'''
-        try:
-            topic   = msg.topic
-            payload = msg.payload.decode("utf-8")
-            # print(payload) # UNCOMMENT WHEN DEBUGGING
-            update  = loads(payload) # CONVERT FROM JSON STRING TO JSON OBJECT  
-        
-             
-            print(update)
-
-        except Exception as e:
-            print(f"MQTT: toggle Error - {str(e)}")
-
-
-
      
 
 
@@ -117,16 +103,4 @@ class MQTT:
 
 
 
-# Blocking call that processes network traffic, dispatches callbacks and
-# handles reconnecting.
-# Other loop*() functions are available that give a threaded interface and a
-# manual interface.
-# client.loop_start()
-# client.loop_forever(retry_first_connection=True)
-
-
-# while True:
-#     sleep(1)
-#     # print(client.is_connected())
-#     publish("620085969_sub", "messages")
-#     pass
+ 
