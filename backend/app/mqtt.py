@@ -90,6 +90,10 @@ class MQTT:
             print(payload) # UNCOMMENT WHEN DEBUGGING  
             
             update  = loads(payload) # CONVERT FROM JSON STRING TO JSON OBJECT  
+            if "ledA" in update:
+                del update["ledA"]
+            if "ledB" in update:
+                del update["ledB"]
             self.mongo.addUpdate(update) # INSERT INTO DATABASE 
 
         except Exception as e:
