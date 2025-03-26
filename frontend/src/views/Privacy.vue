@@ -26,7 +26,7 @@
       <v-row>
         <v-col>
           <p class="font-weight-bold">2. Information We Collect</p>
-          <ul>
+          <ul style="list-style: none; padding: 0; margin: 0;">
             <li><strong>Weather Data:</strong> Temperature, humidity, air pressure, soil moisture, and other environmental data collected by our weather station sensors.</li>
             <li><strong>Personal Information (if applicable):</strong> Name, email address, and other details provided when signing up for notifications or using interactive features.</li>
             <li><strong>Non-Personal Information:</strong> IP address, browser type, and usage data collected automatically when you visit our website.</li>
@@ -37,7 +37,7 @@
       <v-row>
         <v-col>
           <p class="font-weight-bold">3. How We Use Your Information</p>
-          <ul>
+          <ul style="list-style: none; padding: 0; margin: 0;">
             <li>Provide real-time weather data and historical trends.</li>
             <li>Improve and personalize our weather station Services.</li>
             <li>Communicate updates, alerts, or important weather-related notifications (if subscribed).</li>
@@ -50,7 +50,7 @@
       <v-row>
         <v-col>
           <p class="font-weight-bold">4. How We Share Your Information</p>
-          <ul>
+          <ul style="list-style: none; padding: 0; margin: 0;">
             <li><strong>Service Providers:</strong> Third-party tools used for data analytics and website performance.</li>
             <li><strong>Legal Compliance:</strong> Authorities if required by law or to protect our rights.</li>
             <li><strong>Research and Public Use:</strong> Aggregated, anonymized weather data may be shared for scientific or educational purposes.</li>
@@ -68,12 +68,12 @@
       <v-row>
         <v-col>
           <p class="font-weight-bold">6. Your Rights and Choices</p>
-          <ul>
+          <ul style="list-style: none; padding: 0; margin: 0;">
             <li>Accessing or updating your personal information.</li>
             <li>Opting out of email notifications (if applicable).</li>
             <li>Requesting data deletion or restriction.</li>
           </ul>
-          <p>To exercise these rights, <a href="/contact" class="text-primary text-decoration-none">contact us</a>.</p>
+          <p>To exercise these rights, <a href="/contact" style="color: #E30B5C; text-decoration: none;">contact us</a>.</p>
         </v-col>
       </v-row>
       
@@ -94,10 +94,79 @@
       <v-row>
         <v-col>
           <p class="font-weight-bold">9. Contact Us</p>
-          <p>If you have any questions about this Privacy Policy, please <a href="/contact" class="text-primary text-decoration-none">contact us</a>.</p>
+          <p>If you have any questions about this Privacy Policy, please <a href="/contact" style="color: #E30B5C; text-decoration: none;">contact us</a>.</p>
         </v-col>
       </v-row>
     </v-container>
+    <v-container class="bg-surface">
+    <v-row class="d-flex justify-center">
+      <v-col class="text-center">
+        <v-btn href="/privacy">Privacy Policy</v-btn>
+        <v-btn href="/contact">Contact</v-btn>
+      </v-col>
+      <v-col class="text-center">
+        <v-btn icon href="https://facebook.com">
+          <v-icon>mdi-facebook</v-icon>
+        </v-btn>
+        <v-btn icon href="https://twitter.com">
+          <v-icon>mdi-twitter</v-icon>
+        </v-btn>
+        <v-btn icon href="https://instagram.com">
+          <v-icon>mdi-instagram</v-icon>
+        </v-btn>
+      </v-col>
+      <v-col class="text-center">
+        <p>© 2025 Your Weather Station</p>
+      </v-col>
+    </v-row>
+    <VRow class="d-flex align-center justify-center">
+    <!-- Components Button -->
+    <VCol cols="auto">
+      <VBtn
+        href="https://vuetifyjs.com/components/all/"
+        min-width="164"
+        rel="noopener noreferrer"
+        target="_blank"
+        variant="text"
+        size="small"  
+      >
+        <VIcon icon="mdi-view-dashboard" size="large" start />
+        Components
+      </VBtn>
+    </VCol>
+
+    <!-- Get Started Button (Pink) -->
+    <VCol cols="auto">
+      <VBtn
+        color="pink"
+        href="https://vuetifyjs.com/introduction/why-vuetify/#feature-guides"
+        min-width="228"
+        rel="noopener noreferrer"
+        size="medium"  
+        target="_blank"
+        variant="flat"
+      >
+        <VIcon icon="mdi-speedometer" size="large" start />
+        Get Started
+      </VBtn>
+    </VCol>
+
+    <!-- Community Button -->
+    <VCol cols="auto">
+      <VBtn
+        href="https://community.vuetifyjs.com/"
+        min-width="164"
+        rel="noopener noreferrer"
+        target="_blank"
+        variant="text"
+        size="small"  
+      >
+        <VIcon icon="mdi-account-group" size="large" start />
+        Community
+      </VBtn>
+    </VCol>
+  </VRow>
+</v-container>
   </template>
 
 <script setup>

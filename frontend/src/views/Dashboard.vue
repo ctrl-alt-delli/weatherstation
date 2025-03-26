@@ -41,6 +41,76 @@
       </v-col>
     </v-row>
   </v-container>
+  <v-container class="bg-surface">
+    <v-row class="d-flex justify-center">
+      <v-col class="text-center">
+        <v-btn href="/privacy">Privacy Policy</v-btn>
+        <v-btn href="/contact">Contact</v-btn>
+      </v-col>
+      <v-col class="text-center">
+        <v-btn icon href="https://facebook.com">
+          <v-icon>mdi-facebook</v-icon>
+        </v-btn>
+        <v-btn icon href="https://twitter.com">
+          <v-icon>mdi-twitter</v-icon>
+        </v-btn>
+        <v-btn icon href="https://instagram.com">
+          <v-icon>mdi-instagram</v-icon>
+        </v-btn>
+      </v-col>
+      <v-col class="text-center">
+        <p>© 2025 Your Weather Station</p>
+      </v-col>
+    </v-row>
+    <VRow class="d-flex align-center justify-center">
+    <!-- Components Button -->
+    <VCol cols="auto">
+      <VBtn
+        href="https://vuetifyjs.com/components/all/"
+        min-width="164"
+        rel="noopener noreferrer"
+        target="_blank"
+        variant="text"
+        size="small"  
+      >
+        <VIcon icon="mdi-view-dashboard" size="large" start />
+        Components
+      </VBtn>
+    </VCol>
+
+    <!-- Get Started Button (Pink) -->
+    <VCol cols="auto">
+      <VBtn
+        color="pink"
+        href="https://vuetifyjs.com/introduction/why-vuetify/#feature-guides"
+        min-width="228"
+        rel="noopener noreferrer"
+        size="medium"  
+        target="_blank"
+        variant="flat"
+      >
+        <VIcon icon="mdi-speedometer" size="large" start />
+        Get Started
+      </VBtn>
+    </VCol>
+
+    <!-- Community Button -->
+    <VCol cols="auto">
+      <VBtn
+        href="https://community.vuetifyjs.com/"
+        min-width="164"
+        rel="noopener noreferrer"
+        target="_blank"
+        variant="text"
+        size="small"  
+      >
+        <VIcon icon="mdi-account-group" size="large" start />
+        Community
+      </VBtn>
+    </VCol>
+  </VRow>
+</v-container>
+
 </template>
   
 <script setup>
@@ -248,7 +318,6 @@ const temperature = computed(()=>{
   };
   
   watch(payload,(data)=> {
-  console.log(data);
   if(points.value > 0){ points.value -- ; }
   else{ shift.value = true; }
   
@@ -326,6 +395,7 @@ const temperature = computed(()=>{
 figure {
   border: 2px solid black;
 }
+
 
 h2 {
   font-family: 'Great Vibes', cursive;

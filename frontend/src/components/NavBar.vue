@@ -9,27 +9,27 @@
                         <VCol cols="10"  align="center"   > 
 
                             <RouterLink class="route" :to="{ name: 'Home' }" >
-                                <VBtn class="text-subtitle-2"   density="compact"  color="primary" :variant="(route.name == 'Home')? 'tonal':'text'">Home</VBtn>
+                                <VBtn class="text-subtitle-2"   density="compact"  color="pink" :variant="(route.name == 'Home')? 'tonal':'text'">Home</VBtn>
                             </RouterLink>
 
                             <RouterLink class="route" :to="{ name: 'Dashboard' }" >
-                                <VBtn class="text-subtitle-2"   density="compact"  color="primary" :variant="(route.name == 'Dashboard')? 'tonal':'text'">Dashboard</VBtn>
+                                <VBtn class="text-subtitle-2"   density="compact"  color="pink" :variant="(route.name == 'Dashboard')? 'tonal':'text'">Dashboard</VBtn>
                             </RouterLink>
 
                             <RouterLink class="route" :to="{ name: 'Analysis' }" >
-                                <VBtn class="text-subtitle-2"   density="compact"  color="primary" :variant="(route.name == 'Analysis')? 'tonal':'text'">Analysis</VBtn>
+                                <VBtn class="text-subtitle-2"   density="compact"  color="pink" :variant="(route.name == 'Analysis')? 'tonal':'text'">Analysis</VBtn>
                             </RouterLink>
 
                             <RouterLink class="route" :to="{ name: 'Forecast' }" >
-                                <VBtn class="text-subtitle-2"   density="compact"  color="primary" :variant="(route.name == 'Forecast')? 'tonal':'text'">Forecast</VBtn>
+                                <VBtn class="text-subtitle-2"   density="compact"  color="pink" :variant="(route.name == 'Forecast')? 'tonal':'text'">Forecast</VBtn>
                             </RouterLink>
 
                             <RouterLink class="route" :to="{ name: 'Privacy Policy' }" >
-                                <VBtn class="text-subtitle-2"   density="compact"  color="primary" :variant="(route.name == 'Privacy')? 'tonal':'text'">Privacy Policy</VBtn>
+                                <VBtn class="text-subtitle-2"   density="compact"  color="pink" :variant="(route.name == 'Privacy')? 'tonal':'text'">Privacy Policy</VBtn>
                             </RouterLink>
 
                             <RouterLink class="route" :to="{ name: 'Contact Us' }" >
-                                <VBtn class="text-subtitle-2"   density="compact"  color="primary" :variant="(route.name == 'Contact')? 'tonal':'text'">Contact Us</VBtn>
+                                <VBtn class="text-subtitle-2"   density="compact"  color="pink" :variant="(route.name == 'Contact')? 'tonal':'text'">Contact Us</VBtn>
                             </RouterLink>
 
 

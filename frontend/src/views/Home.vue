@@ -30,7 +30,7 @@
         <h3>{{ temperature }}</h3>
       </v-card-text>
       <v-card-actions class="d-flex justify-center">
-        <v-btn color="primary" @click="toggleTemperatureUnit">
+        <v-btn color="pink" @click="toggleTemperatureUnit">
           Change Unit
         </v-btn>
       </v-card-actions>
@@ -46,7 +46,7 @@
       <h3>{{ humidity }}</h3>
     </v-card-text>
     <v-card-actions class="d-flex justify-center">
-        <v-btn color="primary" @click="toggleHumidityUnit">
+        <v-btn color="pink" @click="toggleHumidityUnit">
           Change Unit
         </v-btn>
       </v-card-actions>
@@ -61,7 +61,7 @@
       <h3>{{ heat_index }}</h3>
     </v-card-text>
     <v-card-actions class="d-flex justify-center">
-        <v-btn color="primary" @click="toggleTemperatureUnit">
+        <v-btn color="pink" @click="toggleTemperatureUnit">
           Change Unit
         </v-btn>
       </v-card-actions>
@@ -78,7 +78,7 @@
       <h3>{{ altitude }}</h3>
     </v-card-text>
     <v-card-actions class="d-flex justify-center">
-        <v-btn color="primary" @click="toggleAltitudeUnit">
+        <v-btn color="pink" @click="toggleAltitudeUnit">
           Change Unit
         </v-btn>
       </v-card-actions>
@@ -93,7 +93,7 @@
       <h3>{{ pressure }}</h3>
     </v-card-text>
     <v-card-actions class="d-flex justify-center">
-        <v-btn color="primary" @click="togglePressureUnit">
+        <v-btn color="pink" @click="togglePressureUnit">
           Change Unit
         </v-btn>
       </v-card-actions>
@@ -107,6 +107,11 @@
     <v-card-text class="d-flex justify-center align-center">
       <h3>{{ soil_moisture }}</h3>
     </v-card-text>
+    <v-card-actions class="d-flex justify-center">
+        <v-btn color="pink" @click="toggleMoistureUnit">
+          Change Unit
+        </v-btn>
+      </v-card-actions>
   </v-card>
 </v-col>
   </v-row>
@@ -134,7 +139,7 @@
           <v-card-title>Live Data</v-card-title>
           <v-card-subtitle>View real-time weather data.</v-card-subtitle>
           <v-card-actions>
-            <v-btn color="primary" href="/dashboard">See Live Data</v-btn>
+            <v-btn color="pink" href="/dashboard">See Live Data</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -143,7 +148,7 @@
           <v-card-title>Weather Analysis</v-card-title>
           <v-card-subtitle>View a detailed analysis of weather data over a specified range of time.</v-card-subtitle>
           <v-card-actions>
-            <v-btn color="primary" href="/analysis">See Analysis</v-btn>
+            <v-btn color="pink" href="/analysis">See Analysis</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -152,7 +157,7 @@
           <v-card-title>Weather Predictions</v-card-title>
           <v-card-subtitle>Get accurate forecasts for the coming days.</v-card-subtitle>
           <v-card-actions>
-            <v-btn color="primary" href="/forecast">See Forecasts</v-btn>
+            <v-btn color="pink" href="/forecast">See Forecasts</v-btn>
           </v-card-actions>
         </v-card>
         </v-col>
@@ -167,15 +172,12 @@
       </v-col>
     </v-row>
   </v-container>
-
-  <v-footer>
+  <v-container class="bg-surface">
     <v-row class="d-flex justify-center">
       <v-col class="text-center">
         <v-btn href="/privacy">Privacy Policy</v-btn>
         <v-btn href="/contact">Contact</v-btn>
       </v-col>
-    </v-row>
-    <v-row class="d-flex justify-center">
       <v-col class="text-center">
         <v-btn icon href="https://facebook.com">
           <v-icon>mdi-facebook</v-icon>
@@ -187,17 +189,63 @@
           <v-icon>mdi-instagram</v-icon>
         </v-btn>
       </v-col>
-    </v-row>
-    <v-row class="d-flex justify-center">
       <v-col class="text-center">
         <p>© 2025 Your Weather Station</p>
       </v-col>
     </v-row>
-  </v-footer>
+    <VRow class="d-flex align-center justify-center">
+    <!-- Components Button -->
+    <VCol cols="auto">
+      <VBtn
+        href="https://vuetifyjs.com/components/all/"
+        min-width="164"
+        rel="noopener noreferrer"
+        target="_blank"
+        variant="text"
+        size="small"  
+      >
+        <VIcon icon="mdi-view-dashboard" size="large" start />
+        Components
+      </VBtn>
+    </VCol>
+
+    <!-- Get Started Button (Pink) -->
+    <VCol cols="auto">
+      <VBtn
+        color="pink"
+        href="https://vuetifyjs.com/introduction/why-vuetify/#feature-guides"
+        min-width="228"
+        rel="noopener noreferrer"
+        size="medium"  
+        target="_blank"
+        variant="flat"
+      >
+        <VIcon icon="mdi-speedometer" size="large" start />
+        Get Started
+      </VBtn>
+    </VCol>
+
+    <!-- Community Button -->
+    <VCol cols="auto">
+      <VBtn
+        href="https://community.vuetifyjs.com/"
+        min-width="164"
+        rel="noopener noreferrer"
+        target="_blank"
+        variant="text"
+        size="small"  
+      >
+        <VIcon icon="mdi-account-group" size="large" start />
+        Community
+      </VBtn>
+    </VCol>
+  </VRow>
+</v-container>
+
 </template>
 
 <script setup>
-import { ref,reactive,watch ,onMounted, onBeforeUnmount,computed } from "vue";  
+import { ref,reactive,watch ,onMounted, onBeforeUnmount,computed, isProxy } from "vue";  
 import { useRoute ,useRouter } from "vue-router";
 import { useMqttStore } from '@/store/mqttStore'; // Import Mqtt Store 
 import { storeToRefs } from "pinia"; 
@@ -213,8 +261,8 @@ const AppStore = useAppStore();
 const { payload, payloadTopic } = storeToRefs(Mqtt); 
 
 // Reactive state
-const latitude = ref(18.0050293); // Replace with your weather station latitude
-const longitude = ref(-76.7496350); // Replace with your weather station longitude
+const latitude = ref(18.0050293); 
+const longitude = ref(-76.7496350); 
 const formattedDate = ref('');
 const isCelsius = ref(true);
 const isHpa = ref(true);
@@ -253,7 +301,9 @@ const heat_index = computed(() => {
 
 const soil_moisture = computed(() => {
   if (payload.value) {
-    return `${payload.value.soil_moisture.toFixed(2)} %`;
+    return isPercent.value
+    ?`${payload.value.soil_moisture.toFixed(2)} %`
+    : `${payload.value.soil_moisture.toFixed(0)}/100`
   }
   return 'Loading...';
 });
@@ -292,6 +342,9 @@ const togglePressureUnit = () => {
   isHpa.value = !isHpa.value;
 };
 
+const toggleMoistureUnit = () => {
+  isPercent.value = !isPercent.value;
+};
 
 
 // Initialize the map
@@ -346,13 +399,9 @@ onMounted(() => {
   height: 50vh;
 }
 
+
 #weather-map {
   width: 100%;
-}
-
-.v-footer {
-  background-color: #f0f0f0;
-  padding: 20px;
 }
 
 .left-panel {
