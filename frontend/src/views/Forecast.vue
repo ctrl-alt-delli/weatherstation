@@ -1,4 +1,5 @@
 <template>
+  <v-container class="bg-surface">
     <v-row class="full-page-container">
       <v-col cols="12" md="6" class="d-flex justify-center align-center">
         <div class="weather-forecast">
@@ -27,8 +28,6 @@
         </div>
       </v-col>
     </v-row>
-    
-  <v-container class="bg-surface">
     <v-row class="d-flex justify-center">
       <v-col class="text-center">
         <v-btn href="/privacy">Privacy Policy</v-btn>

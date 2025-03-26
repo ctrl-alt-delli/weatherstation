@@ -97,8 +97,7 @@
           <p>If you have any questions about this Privacy Policy, please <a href="/contact" style="color: #E30B5C; text-decoration: none;">contact us</a>.</p>
         </v-col>
       </v-row>
-    </v-container>
-    <v-container class="bg-surface">
+      <v-container class="bg-surface">
     <v-row class="d-flex justify-center">
       <v-col class="text-center">
         <v-btn href="/privacy">Privacy Policy</v-btn>
@@ -167,6 +166,7 @@
     </VCol>
   </VRow>
 </v-container>
+    </v-container>
   </template>
 
 <script setup>

@@ -24,11 +24,11 @@
                                 <VBtn class="text-subtitle-2"   density="compact"  color="pink" :variant="(route.name == 'Forecast')? 'tonal':'text'">Forecast</VBtn>
                             </RouterLink>
 
-                            <RouterLink class="route" :to="{ name: 'Privacy Policy' }" >
+                            <RouterLink class="route" :to="{ name: 'Privacy' }" >
                                 <VBtn class="text-subtitle-2"   density="compact"  color="pink" :variant="(route.name == 'Privacy')? 'tonal':'text'">Privacy Policy</VBtn>
                             </RouterLink>
 
-                            <RouterLink class="route" :to="{ name: 'Contact Us' }" >
+                            <RouterLink class="route" :to="{ name: 'Contact' }" >
                                 <VBtn class="text-subtitle-2"   density="compact"  color="pink" :variant="(route.name == 'Contact')? 'tonal':'text'">Contact Us</VBtn>
                             </RouterLink>
 

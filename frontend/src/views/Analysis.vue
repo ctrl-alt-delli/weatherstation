@@ -160,9 +160,7 @@
         </figure>
       </v-col>
     </v-row>
-  </v-container>
-
-  <v-container fluid class="bg-surface">
+    <v-container fluid class="bg-surface">
     <h2 class="text-center">Altitude and Air Pressure Analysis</h2>
     <!-- First Row -->
     <v-row max-width="1200px" class="py-1">
@@ -483,6 +481,7 @@
     </VCol>
   </VRow>
 </v-container>
+  </v-container>
 </template>
 
 <script setup>

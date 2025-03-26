@@ -6,8 +6,8 @@ const routes = [
   { path: '/dashboard', name: 'Dashboard', component: () => import('@/views/Dashboard.vue'), meta:{ transition: 'fade'} },
   { path: '/analysis', name: 'Analysis', component: () => import('@/views/Analysis.vue'), meta:{ transition: 'fade'} },
   { path: '/forecast', name: 'Forecast', component: () => import('@/views/Forecast.vue'), meta:{ transition: 'fade'} },
-  { path: '/privacy', name: 'Privacy Policy', component: () => import('@/views/Privacy.vue'), meta:{ transition: 'fade'} },
-  { path: '/contact', name: 'Contact Us', component: () => import('@/views/Contact.vue'), meta:{ transition: 'fade'} }
+  { path: '/privacy', name: 'Privacy', component: () => import('@/views/Privacy.vue'), meta:{ transition: 'fade'} },
+  { path: '/contact', name: 'Contact', component: () => import('@/views/Contact.vue'), meta:{ transition: 'fade'} }
   // ADD NEW ROUTES HERE
   
 ]

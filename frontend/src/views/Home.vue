@@ -118,9 +118,7 @@
 </v-col>
 
     </v-row>
-  </v-container>
-  
-  <v-container>
+    <v-container>
     <v-row>
       <v-col cols="12" md="8" class="mx-auto">
         <h2 class="text-center">About the Weather Station</h2>
@@ -162,9 +160,7 @@
         </v-card>
         </v-col>
     </v-row>
-  </v-container>
-
-  <v-container>
+    <v-container>
     <v-row>
       <v-col cols="12">
         <h2 class="text-center">Interactive Weather Map</h2>
@@ -241,6 +237,10 @@
     </VCol>
   </VRow>
 </v-container>
+  </v-container>
+</v-container>
+  
+
 
 </template>
 

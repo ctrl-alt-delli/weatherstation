@@ -54,8 +54,7 @@
         </v-btn>
       </v-col>
     </v-row>
-  </v-container>
-  <v-container class="bg-surface">
+    <v-container class="bg-surface">
     <v-row class="d-flex justify-center">
       <v-col class="text-center">
         <v-btn href="/privacy">Privacy Policy</v-btn>
@@ -113,6 +112,7 @@
     </VCol>
   </VRow>
 </v-container>
+  </v-container>
 </template>
 
 <script>
