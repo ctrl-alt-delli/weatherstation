@@ -47,18 +47,18 @@
 #define DHTTYPE DHT22
 #define BMP280_ADDRESS 0x76
 Adafruit_BMP280 bmp;
-#define DHTPIN 32
-#define SOILPIN 35
+#define DHTPIN 4
+#define SOILPIN 32
 
-#define TFT_DC    17
-#define TFT_CS    5
-#define TFT_RST   16
-#define TFT_CLK   18
-#define TFT_MOSI  23
-#define TFT_MISO  19
-#define BTN_1 12
-#define BTN_2 13
-#define BTN_3 14
+#define TFT_DC 17
+#define TFT_CS 5
+#define TFT_RST 16
+#define TFT_CLK 18
+#define TFT_MOSI 23
+#define TFT_MISO 19
+#define BTN_1 33
+#define BTN_2 27
+#define BTN_3 2
 
 // DEFINE THE CONTROL PINS FOR THE DHT22 
 
@@ -121,6 +121,7 @@ double t;
 double sm;
 double a;
 double p;
+double hi;
 
 //############### IMPORT HEADER FILES ##################
 #ifndef NTP_H
@@ -209,6 +210,9 @@ void setup() {
     tft.setCursor(5, 290);
     tft.print("soil moisture.");
 
+     tft.setCursor(5, 310);
+    tft.print("- Wait 5 seconds for live sensor data.");
+  delay(5000);
   // INITIALIZE ALL SENSORS AND DEVICES
   dht.begin();
   
@@ -217,12 +221,13 @@ void setup() {
 
   initialize();     // INIT WIFI, MQTT & NTP 
   vButtonCheckFunction(); // UNCOMMENT IF USING BUTTONS INT THIS LAB, THEN ADD LOGIC FOR INTERFACING WITH BUTTONS IN THE vButtonCheck FUNCTION
+  displayLiveSensor();
  }
   
 
 
 void loop() {
-    // put your main code here, to run repeatedly:       
+
     vTaskDelay(1000 / portTICK_PERIOD_MS);    
 }
 
@@ -240,18 +245,24 @@ void vButtonCheck( void * pvParameters )  {
         // Add code here to check if a button(S) is pressed
         if (digitalRead(BTN_1) == LOW) {  // Button is pressed (since it's using the pull-up resistor)
         displayDataTemp(t,h,convert_fahrenheit_to_Celsius(calcHeatIndex(convert_Celsius_to_fahrenheit(t),h)));
+        delay(5000);
+        displayLiveSensor();
         }
         delay(100);
 
         // 2. Implement button2  functionality
         if (digitalRead(BTN_2) == LOW) {  // Button is pressed (since it's using the pull-up resistor)
         displayDataSoil(sm);
+        delay(5000);
+        displayLiveSensor();
         }
         delay(100);
 
         // 3. Implement button3  functionality
         if (digitalRead(BTN_3) == LOW) {  // Button is pressed (since it's using the pull-up resistor)
         displayDataAlt(a,p);
+        delay(5000);
+        displayLiveSensor();
         }
         delay(100);
         // then execute appropriate function if a button is pressed  
@@ -279,6 +290,8 @@ void vUpdate( void * pvParameters )  {
           p = bmp.readPressure() / 100.0F;  
           
           a = bmp.readAltitude(1013.25);
+
+          hi = convert_fahrenheit_to_Celsius(calcHeatIndex(convert_Celsius_to_fahrenheit(t),h));
 
           Serial.print(F("Humidity: "));
           Serial.print(h);
@@ -516,4 +529,152 @@ void drawProgressBar(int x, int y, int w, int h, int progress) {
     int filled = (progress * w) / 100; 
     tft.drawRect(x, y, w, h, ILI9341_MAGENTA);
     tft.fillRect(x + 1, y + 1, filled - 2, h - 2, ILI9341_MAGENTA);
+}
+
+void drawSunIcon(int x, int y, uint16_t color) {
+tft.fillCircle(x, y, 6, color);
+
+tft.drawLine(x, y - 10, x, y - 15, color);
+tft.drawLine(x, y + 10, x, y + 15, color);
+tft.drawLine(x - 10, y, x - 15, y, color);
+tft.drawLine(x + 10, y, x + 15, y, color);
+tft.drawLine(x - 7, y - 7, x - 12, y - 12, color);
+tft.drawLine(x + 7, y - 7, x + 12, y - 12, color);
+tft.drawLine(x - 7, y + 7, x - 12, y + 12, color);
+tft.drawLine(x + 7, y + 7, x + 12, y + 12, color);
+}
+void drawSineWave(int x, int y, int width, int amplitude, int spacing, uint16_t color) {
+for (int i = 0; i < width; i++) {
+int yOffset = amplitude * sin((i * 2 * PI) / width); // Sine wave calculation
+tft.drawPixel(x + i, y - yOffset, color);
+}
+}
+
+void drawHumidityIcon(int x, int y, int width, int amplitude, int spacing, uint16_t color) {
+drawSineWave(x, y, width, amplitude, spacing, color);
+drawSineWave(x, y - spacing, width, amplitude, spacing, color);
+drawSineWave(x, y - 2 * spacing, width, amplitude, spacing, color);
+}
+
+void displayLiveSensor(){
+  tft.setFont(&FreeSerifBoldItalic9pt7b);
+tft.fillScreen(ILI9341_WHITE);
+tft.setTextColor(ILI9341_BLACK);
+  tft.fillRect(25, 40, 120, 50, ILI9341_WHITE);
+tft.fillRect(180, 15, 60, 20, ILI9341_WHITE);
+tft.fillRect(160, 65, 70, 30, ILI9341_WHITE);
+tft.fillRect(10, 140, 140, 50, ILI9341_WHITE);
+tft.fillRect(10, 220, 180, 40, ILI9341_WHITE);
+tft.fillRect(130, 275, 120, 60, ILI9341_WHITE);
+
+drawSunIcon(20, 20, ILI9341_YELLOW);
+tft.setTextSize(1);
+tft.setCursor(40, 30);
+tft.print("Temperature: ");
+tft.setTextSize(2);
+tft.setCursor(30, 70);
+tft.print(t);
+tft.print("C");
+tft.setTextSize(1);
+tft.setCursor(150, 30);
+tft.print("|");
+tft.setCursor(160, 30);
+tft.print("H: ");
+tft.print(h);
+tft.print("%");
+tft.setCursor(160, 60);
+tft.print("Feels Like: ");
+tft.setCursor(160, 80);
+tft.print(hi);
+tft.print("C");
+tft.setCursor(150, 50);
+tft.print("|");
+tft.setCursor(150, 70);
+tft.print("|");
+tft.setCursor(150, 90);
+tft.print("|");
+tft.setCursor(0, 100);
+tft.print("_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _");
+drawHumidityIcon(100, 140, 100, 5, 10, ILI9341_CYAN);
+tft.setCursor(10, 130);
+tft.print("Altitude:");
+tft.setTextSize(2);
+tft.setCursor(10, 170);
+tft.print(a);
+tft.print("m");
+tft.setTextSize(1);
+tft.setCursor(0, 190);
+tft.print("_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _");
+tft.setCursor(10, 210);
+tft.print("Air Pressure:");
+tft.setTextSize(2);
+tft.setCursor(10, 250);
+tft.print(p);
+tft.print("hPa");
+tft.setTextSize(1);
+tft.setCursor(0, 260);
+tft.print("_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _");
+tft.setCursor(10, 300);
+tft.print("Soil Moisture: ");
+tft.setTextSize(2);
+tft.print(sm);
+tft.print("%");    tft.fillRect(25, 40, 120, 50, ILI9341_WHITE);
+tft.fillRect(180, 15, 60, 20, ILI9341_WHITE);
+tft.fillRect(160, 65, 70, 30, ILI9341_WHITE);
+tft.fillRect(10, 140, 140, 50, ILI9341_WHITE);
+tft.fillRect(10, 220, 180, 40, ILI9341_WHITE);
+tft.fillRect(130, 275, 120, 60, ILI9341_WHITE);
+
+drawSunIcon(20, 20, ILI9341_YELLOW);
+tft.setTextSize(1);
+tft.setCursor(40, 30);
+tft.print("Temperature: ");
+tft.setTextSize(2);
+tft.setCursor(30, 70);
+tft.print(t);
+tft.print("C");
+tft.setTextSize(1);
+tft.setCursor(150, 30);
+tft.print("|");
+tft.setCursor(160, 30);
+tft.print("H: ");
+tft.print(h);
+tft.print("%");
+tft.setCursor(160, 60);
+tft.print("Feels Like: ");
+tft.setCursor(160, 80);
+tft.print(hi);
+tft.print("C");
+tft.setCursor(150, 50);
+tft.print("|");
+tft.setCursor(150, 70);
+tft.print("|");
+tft.setCursor(150, 90);
+tft.print("|");
+tft.setCursor(0, 100);
+tft.print("_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _");
+drawHumidityIcon(100, 140, 100, 5, 10, ILI9341_CYAN);
+tft.setCursor(10, 130);
+tft.print("Altitude:");
+tft.setTextSize(2);
+tft.setCursor(10, 170);
+tft.print(a);
+tft.print("m");
+tft.setTextSize(1);
+tft.setCursor(0, 190);
+tft.print("_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _");
+tft.setCursor(10, 210);
+tft.print("Air Pressure:");
+tft.setTextSize(2);
+tft.setCursor(10, 250);
+tft.print(p);
+tft.print("hPa");
+tft.setTextSize(1);
+tft.setCursor(0, 260);
+tft.print("_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _");
+tft.setCursor(10, 300);
+tft.print("Soil Moisture: ");
+tft.setTextSize(2);
+tft.print(sm);
+tft.print("%");    
 }
